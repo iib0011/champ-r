@@ -6,6 +6,8 @@ import { ipcRenderer, remote } from 'electron';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import cn from 'classnames';
+import { promises as fsPromises } from 'fs';
+import { join } from 'path';
 
 import { CornerDownRight } from 'react-feather';
 import { useStyletron } from 'baseui';
@@ -52,7 +54,9 @@ export default function Home() {
     }
 
     const dir = filePaths[0];
-    setLolDir(dir);
+    const isGarena = !!(await fsPromises.stat(join(dir, 'lolex.exe')));
+
+    setLolDir(isGarena ? join(dir, 'Game') : dir);
   };
 
   const clearFolder = () => {
